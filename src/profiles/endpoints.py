@@ -22,8 +22,10 @@ class ProfileController(Controller):
     dependencies = {"service": Provide(provide_profiles_service)}
     dto = ProfileWriteDTO
     return_dto = ProfileDTO
+    tags = ["profiles"]
+    path = "/profiles"
 
-    @get(path="/profiles")
+    @get(path="")
     async def list_profiles(
         self,
         service: ProfileService,
@@ -51,7 +53,7 @@ class ProfileController(Controller):
             offset=limit_offset.offset,
         )
 
-    @post(path="/profiles")
+    @post(path="")
     async def create_profile(
         self,
         service: ProfileService,
@@ -69,7 +71,7 @@ class ProfileController(Controller):
         """
         return await service.create(data, auto_commit=True)
 
-    @get(path="/profiles/{profile_id:int}")
+    @get(path="/{profile_id:int}")
     async def get_profile(
         self,
         service: ProfileService,
@@ -98,7 +100,7 @@ class ProfileController(Controller):
             )
 
     @patch(
-        path="/profiles/{profile_id:int}",
+        path="/{profile_id:int}",
     )
     async def update_profile(
         self,
@@ -123,7 +125,7 @@ class ProfileController(Controller):
         """
         return await service.update(data=data, item_id=profile_id, auto_commit=True)
 
-    @delete(path="/profiles/{profile_id:int}")
+    @delete(path="/{profile_id:int}")
     async def delete_profile(
         self,
         service: ProfileService,
