@@ -1,0 +1,13 @@
+[project]
+name = "nyx"
+version = "0.1.0"
+description = "Add your description here"
+requires-python = ">=3.13"
+dependencies = [
+    "advanced-alchemy>=1.8.0",
+    "alembic>=1.17.1",
+    "asyncpg>=0.30.0",
+    "litestar[standard]>=2.18.0",
+    "pydantic-settings>=2.11.0",
+    "sqlalchemy>=2.0.44",
+]
