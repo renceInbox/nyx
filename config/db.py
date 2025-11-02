@@ -11,4 +11,3 @@ alchemy_config = SQLAlchemyAsyncConfig(
     before_send_handler="autocommit",
     session_config=AsyncSessionConfig(expire_on_commit=False),
 )
-

@@ -8,6 +8,9 @@ class Settings(BaseSettings):
     )
 
     debug: bool = Field(default=False)
-    sqlalchemy_database_uri: str = Field(default="postgresql+asyncpg://baseuser:password@localhost:5432/nyx")
+    sqlalchemy_database_uri: str = Field(
+        default="postgresql+asyncpg://baseuser:password@localhost:5432/nyx"
+    )
+
 
 setting = Settings()

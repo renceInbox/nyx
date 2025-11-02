@@ -1,5 +1,4 @@
 import msgspec
-from litestar.dto import DTOConfig
 
 from src.schemas import PositiveIntStruct, EmailStrStruct
 from litestar.dto.msgspec_dto import MsgspecDTO
@@ -14,12 +13,10 @@ class ProfileStruct(BaseProfileStruct):
     id: PositiveIntStruct | None = msgspec.field(default=None)
 
 
-class ProfileWriteStruct(BaseProfileStruct):
-    ...
+class ProfileWriteStruct(BaseProfileStruct): ...
 
 
-class ProfileWriteDTO(MsgspecDTO[ProfileWriteStruct]):
-    ...
+class ProfileWriteDTO(MsgspecDTO[ProfileWriteStruct]): ...
 
-class ProfileDTO(MsgspecDTO[ProfileStruct]):
-    ...
+
+class ProfileDTO(MsgspecDTO[ProfileStruct]): ...

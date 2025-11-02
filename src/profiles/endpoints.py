@@ -7,7 +7,12 @@ from litestar.exceptions import HTTPException
 from litestar.params import Parameter
 
 from src.profiles.dependencies import provide_profiles_service
-from src.profiles.schemas import ProfileStruct, ProfileWriteStruct, ProfileWriteDTO, ProfileDTO
+from src.profiles.schemas import (
+    ProfileStruct,
+    ProfileWriteStruct,
+    ProfileWriteDTO,
+    ProfileDTO,
+)
 from src.profiles.services import ProfileService
 
 
@@ -62,10 +67,7 @@ class ProfileController(Controller):
         :return: The created profile object.
         :rtype: ProfileStruct
         """
-        return await service.create(
-            data,
-            auto_commit=True
-        )
+        return await service.create(data, auto_commit=True)
 
     @get(path="/profiles/{profile_id:int}")
     async def get_profile(
@@ -120,7 +122,6 @@ class ProfileController(Controller):
         :return: An updated ProfileStruct object.
         """
         return await service.update(data=data, item_id=profile_id, auto_commit=True)
-
 
     @delete(path="/profiles/{profile_id:int}")
     async def delete_profile(
