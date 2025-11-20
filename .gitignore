@@ -2,3 +2,5 @@
 .venv/
 nyx.iml
 .envs
+login-client.pat
+**/__pycache__/**
