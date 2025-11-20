@@ -1,5 +1,9 @@
 from advanced_alchemy import filters
+from litestar.connection import ASGIConnection
+from litestar.exceptions import NotAuthorizedException
 from litestar.params import Parameter
+
+from src.schemas import CurrentUser
 
 
 def provide_limit_offset_pagination(
@@ -23,3 +27,9 @@ def provide_limit_offset_pagination(
         OFFSET to apply to select.
     """
     return filters.LimitOffset(page_size, page_size * (current_page - 1))
+
+
+async def get_current_user(connection: ASGIConnection) -> CurrentUser:
+    if not hasattr(connection.state, "current_user"):
+        raise NotAuthorizedException("Unauthorized")
+    return connection.state.current_user

@@ -6,6 +6,7 @@ from litestar.di import Provide
 from litestar.exceptions import HTTPException
 from litestar.params import Parameter
 
+from src.guards import jwt_guard
 from src.profiles.dependencies import provide_profiles_service
 from src.profiles.schemas import (
     ProfileStruct,
@@ -24,6 +25,7 @@ class ProfileController(Controller):
     return_dto = ProfileDTO
     tags = ["profiles"]
     path = "/profiles"
+    guards = [jwt_guard]
 
     @get(path="")
     async def list_profiles(
