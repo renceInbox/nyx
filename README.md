@@ -12,7 +12,7 @@ Quick links
 - Database & migrations (Alembic): docs/database-and-migrations.md — manage models and generate/apply migrations
 - Testing: docs/testing.md — run tests and patterns for unit/integration tests
 - Troubleshooting: docs/troubleshooting.md — fixes for common issues
-- Contributing: docs/contributing.md — workflow and standards for changes
+- Contributing: CONTRIBUTING.md — workflow and standards for changes
 
 Features
 - Litestar ASGI app with OpenAPI and global Bearer security
@@ -78,7 +78,7 @@ python -m unittest discover -s tests -p 'test_*.py' -v
 See docs/testing.md for patterns and examples.
 
 Contributing
-See docs/contributing.md. Issues and PRs are welcome. Please follow the code style and testing guidelines.
+See CONTRIBUTING.md. Issues and PRs are welcome. Please follow the code style and testing guidelines.
 
 License
-No license has been selected yet. If you intend to reuse or contribute, please open an issue to discuss licensing (e.g., MIT, Apache-2.0). The maintainer may add a LICENSE file in a future update.
+This project is licensed under the PolyForm Noncommercial License 1.0.0. You may use, copy, and modify the software for noncommercial purposes. Commercial use requires a separate commercial license. See the LICENSE file for details or open an issue to discuss commercial licensing.
