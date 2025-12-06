@@ -1,4 +1,5 @@
 from typing import Annotated
+from typing import Generic, TypeVar
 
 import msgspec
 from msgspec import Meta
@@ -7,6 +8,16 @@ PositiveIntStruct = Annotated[int, Meta(gt=0)]
 EmailStrStruct = Annotated[
     str, Meta(pattern=r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$")
 ]
+
+
+T = TypeVar("T")
+
+
+class OffsetPagination(msgspec.Struct, Generic[T]):
+    items: list[T]
+    limit: int
+    offset: int
+    total: int
 
 
 class CurrentUser(msgspec.Struct):

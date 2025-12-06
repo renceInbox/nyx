@@ -1,6 +1,5 @@
 from advanced_alchemy import filters
 from advanced_alchemy.exceptions import NotFoundError
-from advanced_alchemy.service import OffsetPagination
 from litestar import Controller, get, post, patch, delete
 from litestar.di import Provide
 from litestar.exceptions import HTTPException
@@ -15,6 +14,7 @@ from src.profiles.schemas import (
     ProfileDTO,
 )
 from src.profiles.services import ProfileService
+from src.schemas import OffsetPagination
 
 
 class ProfileController(Controller):
@@ -31,7 +31,8 @@ class ProfileController(Controller):
     async def list_profiles(
         self,
         service: ProfileService,
-        limit_offset: filters.LimitOffset,
+        limit: int = 10,
+        offset: int = 0,
     ) -> OffsetPagination[ProfileStruct]:
         """
         Handles retrieving a paginated list of profiles using the provided filtering and
@@ -47,6 +48,8 @@ class ProfileController(Controller):
                  count, and pagination metadata (limit and offset).
         :rtype: OffsetPagination[ProfileStruct]
         """
+        limit_offset = filters.LimitOffset(limit=limit, offset=offset)
+
         results, total = await service.list_and_count(limit_offset)
         return OffsetPagination[ProfileStruct](
             items=results,
