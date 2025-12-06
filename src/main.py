@@ -7,7 +7,6 @@ from litestar import Litestar
 from litestar.openapi import OpenAPIConfig
 
 from config.db import alchemy_config
-from src.auth import oauth2_auth
 from src.profiles.controllers import ProfileController
 from src.utils import refresh_jwks_periodically
 
@@ -27,5 +26,5 @@ app = Litestar(
     plugins=[SQLAlchemyPlugin(config=alchemy_config)],
     openapi_config=openapi_config,
     on_startup=[on_startup],
-    security=[oauth2_auth],
+    # security=[oauth2_auth],
 )
