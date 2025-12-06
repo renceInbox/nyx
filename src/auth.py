@@ -4,10 +4,34 @@ from jose import jwt
 from litestar.exceptions import NotAuthorizedException
 from typing import Any, Dict
 
+from litestar.security.jwt import OAuth2PasswordBearerAuth
+
 from config.zitadel import zitadel_settings
+from src.schemas import CurrentUser
 
 JWKS_CACHE: Dict[str, Any] = {}
 JWKS_LAST_FETCH: float = 0.0
+
+
+async def retrieve_user_handler(token: str) -> CurrentUser:
+    """Verify JWT and return user from token claims"""
+    payload = await verify_jwt(token)  # You already have this!
+
+    return CurrentUser(
+        sub=payload.get("sub"),
+        email=payload.get("email"),
+        preferred_username=payload.get("preferred_username"),
+        roles=payload.get("roles", []),
+        exp=payload.get("exp"),
+    )
+
+
+oauth2_auth = OAuth2PasswordBearerAuth[CurrentUser](
+    retrieve_user_handler=retrieve_user_handler,
+    token_secret=zitadel_settings.jwt_secret,
+    token_url="/login",  # nosec
+    exclude=["/login", "/schema"],
+)
 
 
 async def fetch_jwks() -> Dict[str, Any]:

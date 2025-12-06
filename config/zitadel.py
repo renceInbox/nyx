@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     jwks_url: str = Field(default="http://localhost:8080/oauth/v2/keys")
     audience: str = Field(default="client-id")
     jwks_refresh_interval: int = Field(default=6 * 3600)
+    jwt_secret: str = Field(default="secret")
 
 
 zitadel_settings = Settings()
