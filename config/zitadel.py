@@ -10,6 +10,10 @@ class Settings(BaseSettings):
     issuer: str = Field(default="http://localhost:8080")
     jwks_url: str = Field(default="http://localhost:8080/oauth/v2/keys")
     audience: str = Field(default="client-id")
+    client_id: str = Field(default="client-id")
+    client_secret: str | None = Field(default=None)
+    private_key: str = Field(default=None)
+    key_id: str | None = Field(default=None)
     jwks_refresh_interval: int = Field(default=6 * 3600)
     jwt_secret: str = Field(default="secret")
 
