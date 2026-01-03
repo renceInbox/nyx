@@ -12,10 +12,16 @@ class Settings(BaseSettings):
     audience: str = Field(default="client-id")
     client_id: str = Field(default="client-id")
     client_secret: str | None = Field(default=None)
-    private_key: str = Field(default=None)
     key_id: str | None = Field(default=None)
     jwks_refresh_interval: int = Field(default=6 * 3600)
     jwt_secret: str = Field(default="secret")
+    use_introspection: bool = Field(default=False)
+
+    web_client_id: str = Field(default="client-id-fe")
+    web_client_secret: str = Field(default="secret")
+    web_redirect_uri: str = Field(default="http://localhost:8000/callback")
+    authorization_endpoint: str = Field(default="/oauth/v2/auth")
+    token_endpoint: str = Field(default="/oauth/v2/token")
 
 
 zitadel_settings = Settings()

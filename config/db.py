@@ -3,11 +3,11 @@ from advanced_alchemy.extensions.litestar import (
     SQLAlchemyAsyncConfig,
 )
 
-from config.base import setting
+from config.base import settings
 from src.profiles.models import Profile  # noqa
 
 alchemy_config = SQLAlchemyAsyncConfig(
-    connection_string=setting.sqlalchemy_database_uri,
+    connection_string=settings.sqlalchemy_database_uri,
     before_send_handler="autocommit",
     session_config=AsyncSessionConfig(expire_on_commit=False),
 )

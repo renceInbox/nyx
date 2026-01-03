@@ -1,6 +1,6 @@
 import asyncio
 
-from src.auth import get_jwks
+from src.auth.utils import get_jwks
 
 
 async def refresh_jwks_periodically():

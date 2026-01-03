@@ -7,7 +7,7 @@ from litestar import Litestar
 from litestar.openapi import OpenAPIConfig
 
 from config.db import alchemy_config
-from src.auth_controller import AuthController
+from src.auth.controller import AuthController
 from src.profiles.controllers import ProfileController
 from src.utils import refresh_jwks_periodically
 

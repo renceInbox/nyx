@@ -8,6 +8,7 @@ from litestar.handlers import BaseRouteHandler
 
 from config.zitadel import zitadel_settings
 from src.schemas import CurrentUser
+from src.auth.zitadel_validator import introspect_token_async
 
 
 class JWKSCache:
@@ -51,3 +52,48 @@ async def jwt_guard(connection: ASGIConnection, _: BaseRouteHandler) -> None:
 
     # ⚡ Convert to typed msgspec.Struct
     connection.state.current_user = msgspec.convert(payload, type=CurrentUser)
+
+
+async def introspect_guard(connection: ASGIConnection, _: BaseRouteHandler) -> None:
+    auth = connection.headers.get("authorization")
+    if not auth or not auth.startswith("Bearer "):
+        raise NotAuthorizedException("Missing Authorization header")
+
+    token_string = auth.removeprefix("Bearer ").strip()
+
+    try:
+        token = await introspect_token_async(token_string)
+    except httpx.HTTPStatusError as e:
+        raise NotAuthorizedException(f"Introspection failed: {e.response.text}")
+    except httpx.RequestError as e:
+        raise NotAuthorizedException(f"Introspection request error: {e}")
+
+    if not token.get("active"):
+        raise NotAuthorizedException("Invalid token (active: false)")
+
+    # Map Zitadel introspection response to CurrentUser
+    # Note: Zitadel introspection response might have different keys than JWT payload
+    # but CurrentUser fields (sub, email, preferred_username) are usually common.
+
+    # Roles in Zitadel introspection are often in 'urn:zitadel:iam:org:project:roles'
+    roles_key = "urn:zitadel:iam:org:project:roles"
+    roles = list(token.get(roles_key, {}).keys())
+
+    user_data = {
+        "sub": token.get("sub"),
+        "email": token.get("email"),
+        "preferred_username": token.get("preferred_username"),
+        "roles": roles,
+        "exp": token.get("exp"),
+    }
+
+    connection.state.current_user = msgspec.convert(user_data, type=CurrentUser)
+
+
+async def auth_guard(
+    connection: ASGIConnection, route_handler: BaseRouteHandler
+) -> None:
+    if zitadel_settings.use_introspection:
+        await introspect_guard(connection, route_handler)
+    else:
+        await jwt_guard(connection, route_handler)
